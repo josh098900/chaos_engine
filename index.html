@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM's Chaos Engine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>DM's Chaos Engine</h1>
+    <div class="controls">
+        <label for="tone">Tone:</label>
+        <select id="tone">
+            <option value="default">Default</option>
+            <option value="silly">Extra Silly</option>
+            <option value="combat">Combat-Heavy</option>
+            <option value="roleplay">Roleplay Focus</option>
+        </select>
+        <button onclick="generateNPC()">New NPC</button>
+        <button onclick="generateTwist()">Cliffhanger Twist</button>
+        <button onclick="generateLoot()">Combat Loot</button>
+        <button onclick="generateEncounter()">Quick Encounter</button>
+        <button onclick="saveResult()">Save Result</button>
+    </div>
+    <div class="dice">
+        <button onclick="rollDice(20)">Roll d20</button>
+        <span id="dice-result"></span>
+    </div>
+    <div id="output" class="output-box"></div>
+    <div id="history" class="history-box">
+        <h2>Saved Ideas</h2>
+        <ul id="history-list"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
