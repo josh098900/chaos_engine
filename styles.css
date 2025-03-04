@@ -4,8 +4,16 @@ body {
     background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #e6d7a3; /* Parchment texture */
     color: #2d1b3d; /* Dark purple-gray for text */
     margin: 0;
-    padding: 20px;
+    padding: 0; /* Adjusted padding */
     background-blend-mode: overlay;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures body takes full viewport height */
+}
+
+main {
+    flex: 1; /* Pushes footer to bottom by letting main grow */
+    padding: 20px; /* Restores padding inside main content */
 }
 
 h1 {
@@ -111,6 +119,17 @@ label {
     padding: 8px 0;
     border-bottom: 1px solid #4a2c6d; /* Purple separator */
     color: #2d1b3d;
+}
+
+footer {
+    width: 100%;
+    padding: 10px;
+    background: rgba(230, 215, 163, 0.9); /* Parchment-like */
+    color: #d4af37; /* Gold text */
+    text-shadow: 1px 1px 2px #1a0d1a; /* Dark shadow */
+    font-size: 1.1em;
+    border-top: 2px solid #4a2c6d; /* Purple separator */
+    box-shadow: 0 -5px 10px rgba(45, 27, 61, 0.3); /* Shadow upward */
 }
 
 @keyframes fadeIn {
