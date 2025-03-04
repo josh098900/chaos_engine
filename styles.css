@@ -1,65 +1,105 @@
 body {
     font-family: 'Cinzel', serif;
     text-align: center;
-    background-color: #f4e8c1; /* Parchment-like background */
-    color: #4a2c6d;
+    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #e6d7a3; /* Parchment texture */
+    color: #2d1b3d; /* Dark purple-gray for text */
     margin: 0;
     padding: 20px;
+    background-blend-mode: overlay;
 }
 
 h1 {
-    color: #6b3fa0;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    color: #d4af37; /* Gold for the title */
+    text-shadow: 2px 2px 4px #1a0d1a, 0 0 10px rgba(212, 175, 55, 0.5); /* Shadow + glow */
+    font-size: 2.5em;
+    margin-bottom: 20px;
 }
 
 .controls {
     margin: 20px;
+    background: rgba(45, 27, 61, 0.9); /* Deep purple background */
+    padding: 15px;
+    border: 2px solid #d4af37; /* Gold border */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); /* Subtle gold glow */
 }
 
 label {
+    color: #e6d7a3; /* Parchment off-white */
     margin-right: 10px;
+    text-shadow: 1px 1px 2px #1a0d1a;
 }
 
 .controls select, .controls button {
     padding: 10px;
     margin: 5px;
-    background-color: #6b3fa0;
-    color: white;
-    border: none;
+    background-color: #4a2c6d; /* Rich purple */
+    color: #e6d7a3; /* Off-white text */
+    border: 1px solid #d4af37; /* Gold trim */
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Cinzel', serif;
+    transition: all 0.3s ease;
 }
 
-button:hover, select:hover {
-    background-color: #8a5bc2;
+.controls select:hover, .controls button:hover {
+    background-color: #6b3fa0; /* Lighter purple */
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Gold glow on hover */
 }
 
 .dice {
-    margin: 10px;
+    margin: 15px;
+}
+
+.dice button {
+    background-color: #2d1b3d; /* Darker purple */
+    color: #e6d7a3;
+    padding: 10px 20px;
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dice button:hover {
+    background-color: #4a2c6d;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 #dice-result {
     margin-left: 10px;
     font-weight: bold;
+    color: #d4af37; /* Gold for dice result */
+    text-shadow: 1px 1px 2px #1a0d1a;
 }
 
 .output-box {
     margin: 20px auto;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #4a2c6d;
+    background: rgba(230, 215, 163, 0.9); /* Parchment-like */
+    border: 3px solid #2d1b3d; /* Dark purple border */
     border-radius: 10px;
     max-width: 600px;
+    box-shadow: 0 0 15px rgba(45, 27, 61, 0.5); /* Subtle purple shadow */
     animation: fadeIn 0.5s;
+    color: #2d1b3d;
 }
 
 .history-box {
     margin: 20px auto;
-    padding: 10px;
-    background-color: rgba(224, 224, 224, 0.8);
-    border: 1px dashed #4a2c6d;
+    padding: 15px;
+    background: rgba(230, 215, 163, 0.7); /* Lighter parchment */
+    border: 2px dashed #4a2c6d; /* Dashed purple */
+    border-radius: 10px;
     max-width: 600px;
     text-align: left;
+    box-shadow: 0 0 10px rgba(45, 27, 61, 0.3);
+}
+
+.history-box h2 {
+    color: #d4af37; /* Gold for "Saved Ideas" */
+    text-shadow: 1px 1px 2px #1a0d1a;
+    margin-top: 0;
 }
 
 #history-list {
@@ -68,8 +108,9 @@ button:hover, select:hover {
 }
 
 #history-list li {
-    padding: 5px 0;
-    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
+    border-bottom: 1px solid #4a2c6d; /* Purple separator */
+    color: #2d1b3d;
 }
 
 @keyframes fadeIn {
