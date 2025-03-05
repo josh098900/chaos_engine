@@ -12,7 +12,7 @@ const twists = {
     default: [
         "The bridge collapses mid-fight—roll to grab the ledge!",
         "A horn sounds; reinforcements arrive, but whose?",
-        "The enemy vanishes, leaving a ticking box behind.",
+        "The enemy vanishes, leaving a ticking box behind!",
         "A storm rolls in—lightning strikes something vital!",
     ],
     underdark: ["A cave-in traps you with glowing eyes in the dark!", "Poison gas seeps from the walls—hold your breath!"],
@@ -92,6 +92,7 @@ function generateTwist() {
     const twist = twistList[Math.floor(Math.random() * twistList.length)];
     const roll = rollDice(20);
     document.getElementById("output").innerText = `${twist} (Roll: ${roll} - DM decides the outcome!)`;
+    return `${twist} (Roll: ${roll} - DM decides the outcome!)`; // Return for combat sim
 }
 
 function generateLoot() {
@@ -158,15 +159,14 @@ function runCombatSim() {
     const enemyInput = document.getElementById("enemy-input").value.trim().split("\n").filter(line => line.trim() !== "");
     let log = "";
 
-    // Parse inputs matching your format: "Name: HP, AC, +Attack, Damage"
     const party = partyInput.map(line => {
-        const parts = line.split(/,\s*/); // Split on comma with optional spaces
-        if (parts.length !== 4) { // Expect 4 parts after comma split
+        const parts = line.split(/,\s*/);
+        if (parts.length !== 4) {
             log += `Invalid party entry: "${line}"\n`;
             return null;
         }
         const [nameHP, ac, atk, dmg] = parts;
-        const [name, hp] = nameHP.split(/:\s*/); // Split name and HP on colon
+        const [name, hp] = nameHP.split(/:\s*/);
         if (!name || !hp) {
             log += `Invalid name/HP in party entry: "${line}"\n`;
             return null;
@@ -181,13 +181,13 @@ function runCombatSim() {
     }).filter(c => c !== null);
 
     const enemies = enemyInput.map(line => {
-        const parts = line.split(/,\s*/); // Split on comma with optional spaces
-        if (parts.length !== 4) { // Expect 4 parts after comma split
+        const parts = line.split(/,\s*/);
+        if (parts.length !== 4) {
             log += `Invalid enemy entry: "${line}"\n`;
             return null;
         }
         const [nameHP, ac, atk, dmg] = parts;
-        const [name, hp] = nameHP.split(/:\s*/); // Split name and HP on colon
+        const [name, hp] = nameHP.split(/:\s*/);
         if (!name || !hp) {
             log += `Invalid name/HP in enemy entry: "${line}"\n`;
             return null;
@@ -207,7 +207,6 @@ function runCombatSim() {
         return;
     }
 
-    // Simple combat loop (5 rounds max)
     let combatants = [...party, ...enemies];
     for (let round = 1; round <= 5 && party.some(c => c.hp > 0) && enemies.some(c => c.hp > 0); round++) {
         log += `Round ${round}:\n`;
@@ -228,16 +227,18 @@ function runCombatSim() {
         });
     }
 
-    // Outcome
     if (party.every(c => c.hp <= 0)) log += "Enemies win!\n";
     else if (enemies.every(c => c.hp <= 0)) log += "Party wins!\n";
-    else log += "The battle rages on—roll for a twist!\n";
+    else {
+        log += "The battle rages on!\n";
+        log += generateTwist() + "\n"; // Auto-add a twist
+    }
 
     document.getElementById("combat-log").innerText = log;
 }
 
-function evalDice(dmgString) { // e.g., "1d8+3"
-    if (!dmgString || typeof dmgString !== "string") return 1; // Fallback to 1 damage if invalid
+function evalDice(dmgString) {
+    if (!dmgString || typeof dmgString !== "string") return 1;
     const [dice, mod] = dmgString.split("+");
     const [count, sides] = dice.split("d").map(Number);
     let total = 0;
