@@ -152,3 +152,95 @@ function updateHistory() {
         historyList.appendChild(li);
     });
 }
+
+function runCombatSim() {
+    const partyInput = document.getElementById("party-input").value.trim().split("\n").filter(line => line.trim() !== "");
+    const enemyInput = document.getElementById("enemy-input").value.trim().split("\n").filter(line => line.trim() !== "");
+    let log = "";
+
+    // Parse inputs matching your format: "Name: HP, AC, +Attack, Damage"
+    const party = partyInput.map(line => {
+        const parts = line.split(/,\s*/); // Split on comma with optional spaces
+        if (parts.length !== 4) { // Expect 4 parts after comma split
+            log += `Invalid party entry: "${line}"\n`;
+            return null;
+        }
+        const [nameHP, ac, atk, dmg] = parts;
+        const [name, hp] = nameHP.split(/:\s*/); // Split name and HP on colon
+        if (!name || !hp) {
+            log += `Invalid name/HP in party entry: "${line}"\n`;
+            return null;
+        }
+        return {
+            name: name.trim(),
+            hp: parseInt(hp) || 0,
+            ac: parseInt(ac) || 10,
+            atk: parseInt(atk.replace("+", "")) || 0,
+            dmg: dmg || "1d4"
+        };
+    }).filter(c => c !== null);
+
+    const enemies = enemyInput.map(line => {
+        const parts = line.split(/,\s*/); // Split on comma with optional spaces
+        if (parts.length !== 4) { // Expect 4 parts after comma split
+            log += `Invalid enemy entry: "${line}"\n`;
+            return null;
+        }
+        const [nameHP, ac, atk, dmg] = parts;
+        const [name, hp] = nameHP.split(/:\s*/); // Split name and HP on colon
+        if (!name || !hp) {
+            log += `Invalid name/HP in enemy entry: "${line}"\n`;
+            return null;
+        }
+        return {
+            name: name.trim(),
+            hp: parseInt(hp) || 0,
+            ac: parseInt(ac) || 10,
+            atk: parseInt(atk.replace("+", "")) || 0,
+            dmg: dmg || "1d4"
+        };
+    }).filter(c => c !== null);
+
+    if (party.length === 0 || enemies.length === 0) {
+        log += "Please enter at least one valid party member and one enemy!\nFormat: Name: HP, AC, +Attack, Damage (e.g., Fighter: 20 HP, 16 AC, +5, 1d8+3)";
+        document.getElementById("combat-log").innerText = log;
+        return;
+    }
+
+    // Simple combat loop (5 rounds max)
+    let combatants = [...party, ...enemies];
+    for (let round = 1; round <= 5 && party.some(c => c.hp > 0) && enemies.some(c => c.hp > 0); round++) {
+        log += `Round ${round}:\n`;
+        combatants.forEach(attacker => {
+            if (attacker.hp <= 0) return;
+            const target = attacker.hp > 0 ? (party.includes(attacker) ? enemies : party).find(t => t.hp > 0) : null;
+            if (!target) return;
+
+            const roll = rollDice(20);
+            const hit = roll + attacker.atk >= target.ac;
+            if (hit) {
+                const damage = evalDice(attacker.dmg);
+                target.hp -= damage;
+                log += `${attacker.name} hits ${target.name} for ${damage} damage! (${target.hp} HP left)\n`;
+            } else {
+                log += `${attacker.name} misses ${target.name}!\n`;
+            }
+        });
+    }
+
+    // Outcome
+    if (party.every(c => c.hp <= 0)) log += "Enemies win!\n";
+    else if (enemies.every(c => c.hp <= 0)) log += "Party wins!\n";
+    else log += "The battle rages on—roll for a twist!\n";
+
+    document.getElementById("combat-log").innerText = log;
+}
+
+function evalDice(dmgString) { // e.g., "1d8+3"
+    if (!dmgString || typeof dmgString !== "string") return 1; // Fallback to 1 damage if invalid
+    const [dice, mod] = dmgString.split("+");
+    const [count, sides] = dice.split("d").map(Number);
+    let total = 0;
+    for (let i = 0; i < (count || 1); i++) total += Math.floor(Math.random() * (sides || 4)) + 1;
+    return total + (parseInt(mod) || 0);
+}
