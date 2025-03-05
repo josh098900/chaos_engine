@@ -194,7 +194,8 @@ function runCombatSim() {
             ac: parseInt(ac) || 10,
             atk: parseInt(atk.replace("+", "")) || 0,
             dmg: dmg || "1d4",
-            init: parseInt(init?.replace("+", "")) || 0
+            init: parseInt(init?.replace("+", "")) || 0,
+            isParty: true
         };
     }).filter(c => c !== null);
 
@@ -218,7 +219,8 @@ function runCombatSim() {
             ac: parseInt(ac) || 10,
             atk: parseInt(atk.replace("+", "")) || 0,
             dmg: dmg || "1d4",
-            init: parseInt(init?.replace("+", "")) || 0
+            init: parseInt(init?.replace("+", "")) || 0,
+            isParty: false
         };
     }).filter(c => c !== null);
 
@@ -228,19 +230,18 @@ function runCombatSim() {
         return;
     }
 
-    // Deep copy to ensure combatants reflect changes
-    let combatants = [...party.map(c => ({ ...c })), ...enemies.map(c => ({ ...c }))];
+    let combatants = [...party, ...enemies];
     combatants.forEach(c => c.initiative = rollDice(20) + c.init);
     combatants.sort((a, b) => b.initiative - a.initiative); // Highest first
     log += "Initiative Order: " + combatants.map(c => `${c.name} (${c.initiative})`).join(", ") + "\n\n";
     updateCombatTracker(combatants);
 
-    for (let round = 1; round <= 5 && combatants.some(c => c.hp > 0 && party.includes(c)) && combatants.some(c => c.hp > 0 && enemies.includes(c)); round++) {
+    for (let round = 1; round <= 5 && combatants.some(c => c.hp > 0 && c.isParty) && combatants.some(c => c.hp > 0 && !c.isParty); round++) {
         log += `Round ${round}:\n`;
         combatants.forEach(attacker => {
             if (attacker.hp <= 0) return;
-            const targetSide = party.includes(attacker) ? enemies : party;
-            const target = combatants.find(c => c.hp > 0 && targetSide.some(t => t.name === c.name));
+            const targetSide = attacker.isParty ? combatants.filter(c => !c.isParty && c.hp > 0) : combatants.filter(c => c.isParty && c.hp > 0);
+            const target = targetSide[Math.floor(Math.random() * targetSide.length)]; // Random living target
             if (!target) return;
 
             const roll = rollDice(20);
@@ -256,8 +257,10 @@ function runCombatSim() {
         });
     }
 
-    if (party.every(c => c.hp <= 0)) log += "Enemies win!\n";
-    else if (enemies.every(c => c.hp <= 0)) log += "Party wins!\n";
+    const partyAlive = combatants.some(c => c.hp > 0 && c.isParty);
+    const enemiesAlive = combatants.some(c => c.hp > 0 && !c.isParty);
+    if (!partyAlive) log += "Enemies win!\n";
+    else if (!enemiesAlive) log += "Party wins!\n";
     else {
         log += "The battle rages on!\n";
         log += generateTwist() + "\n";
