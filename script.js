@@ -154,6 +154,21 @@ function updateHistory() {
     });
 }
 
+function updateCombatTracker(combatants) {
+    const tracker = document.getElementById("combat-tracker");
+    tracker.innerHTML = "";
+    combatants.forEach(c => {
+        const maxHP = c.maxHP || c.hp; // Store initial HP as maxHP
+        const div = document.createElement("div");
+        div.className = "tracker-bar";
+        div.innerHTML = `
+            <span>${c.name}: ${c.hp}/${maxHP} HP</span>
+            <progress value="${c.hp}" max="${maxHP}"></progress>
+        `;
+        tracker.appendChild(div);
+    });
+}
+
 function runCombatSim() {
     const partyInput = document.getElementById("party-input").value.trim().split("\n").filter(line => line.trim() !== "");
     const enemyInput = document.getElementById("enemy-input").value.trim().split("\n").filter(line => line.trim() !== "");
@@ -171,9 +186,11 @@ function runCombatSim() {
             log += `Invalid name/HP in party entry: "${line}"\n`;
             return null;
         }
+        const hpValue = parseInt(hp) || 0;
         return {
             name: name.trim(),
-            hp: parseInt(hp) || 0,
+            hp: hpValue,
+            maxHP: hpValue, // Store initial HP
             ac: parseInt(ac) || 10,
             atk: parseInt(atk.replace("+", "")) || 0,
             dmg: dmg || "1d4"
@@ -192,9 +209,11 @@ function runCombatSim() {
             log += `Invalid name/HP in enemy entry: "${line}"\n`;
             return null;
         }
+        const hpValue = parseInt(hp) || 0;
         return {
             name: name.trim(),
-            hp: parseInt(hp) || 0,
+            hp: hpValue,
+            maxHP: hpValue, // Store initial HP
             ac: parseInt(ac) || 10,
             atk: parseInt(atk.replace("+", "")) || 0,
             dmg: dmg || "1d4"
@@ -208,6 +227,8 @@ function runCombatSim() {
     }
 
     let combatants = [...party, ...enemies];
+    updateCombatTracker(combatants); // Initial display
+
     for (let round = 1; round <= 5 && party.some(c => c.hp > 0) && enemies.some(c => c.hp > 0); round++) {
         log += `Round ${round}:\n`;
         combatants.forEach(attacker => {
@@ -219,11 +240,12 @@ function runCombatSim() {
             const hit = roll + attacker.atk >= target.ac;
             if (hit) {
                 const damage = evalDice(attacker.dmg);
-                target.hp -= damage;
+                target.hp = Math.max(0, target.hp - damage); // Prevent negative HP
                 log += `${attacker.name} hits ${target.name} for ${damage} damage! (${target.hp} HP left)\n`;
             } else {
                 log += `${attacker.name} misses ${target.name}!\n`;
             }
+            updateCombatTracker(combatants); // Update after each action
         });
     }
 

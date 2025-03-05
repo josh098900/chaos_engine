@@ -163,6 +163,44 @@ textarea {
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
+#combat-tracker {
+    margin: 10px auto;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.tracker-bar {
+    width: 200px;
+    background: rgba(230, 215, 163, 0.9);
+    border: 2px solid #4a2c6d;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: left;
+}
+
+.tracker-bar span {
+    color: #2d1b3d;
+    font-size: 0.9em;
+}
+
+.tracker-bar progress {
+    width: 100%;
+    height: 10px;
+    border: none;
+    background: #2d1b3d;
+}
+
+.tracker-bar progress::-webkit-progress-value {
+    background: #d4af37; /* Gold HP bar */
+}
+
+.tracker-bar progress::-moz-progress-bar {
+    background: #d4af37;
+}
+
 footer {
     width: 100%;
     padding: 10px;
