@@ -121,6 +121,48 @@ label {
     color: #2d1b3d;
 }
 
+.combat-sim {
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.combat-sim h2 {
+    color: #d4af37;
+    text-shadow: 1px 1px 2px #1a0d1a;
+}
+
+.combat-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    background: rgba(230, 215, 163, 0.9);
+    border: 2px solid #4a2c6d;
+    border-radius: 5px;
+    color: #2d1b3d;
+    padding: 10px;
+    font-family: 'Cinzel', serif;
+}
+
+.combat-sim button {
+    margin: 10px 0;
+    background-color: #4a2c6d;
+    color: #e6d7a3;
+    padding: 10px 20px;
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.combat-sim button:hover {
+    background-color: #6b3fa0;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
 footer {
     width: 100%;
     padding: 10px;

@@ -40,6 +40,15 @@
             <h2>Saved Ideas</h2>
             <ul id="history-list"></ul>
         </div>
+        <div class="combat-sim">
+            <h2>Combat Simulator</h2>
+            <div class="combat-inputs">
+                <textarea id="party-input" placeholder="Party (e.g., Fighter: 20 HP, 16 AC, +5, 1d8+3)"></textarea>
+                <textarea id="enemy-input" placeholder="Enemies (e.g., Goblin: 10 HP, 12 AC, +3, 1d4+1)"></textarea>
+            </div>
+            <button onclick="runCombatSim()">Simulate Fight</button>
+            <div id="combat-log" class="output-box"></div>
+        </div>
     </main>
     <footer>Crafted for Jay :D</footer>
     <script src="script.js"></script>
