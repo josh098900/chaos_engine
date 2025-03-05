@@ -158,11 +158,11 @@ function updateCombatTracker(combatants) {
     const tracker = document.getElementById("combat-tracker");
     tracker.innerHTML = "";
     combatants.forEach(c => {
-        const maxHP = c.maxHP || c.hp; // Store initial HP as maxHP
+        const maxHP = c.maxHP || c.hp;
         const div = document.createElement("div");
         div.className = "tracker-bar";
         div.innerHTML = `
-            <span>${c.name}: ${c.hp}/${maxHP} HP</span>
+            <span>${c.name}: ${c.hp}/${maxHP} HP (Init: ${c.initiative})</span>
             <progress value="${c.hp}" max="${maxHP}"></progress>
         `;
         tracker.appendChild(div);
@@ -176,11 +176,11 @@ function runCombatSim() {
 
     const party = partyInput.map(line => {
         const parts = line.split(/,\s*/);
-        if (parts.length !== 4) {
+        if (parts.length < 4 || parts.length > 5) {
             log += `Invalid party entry: "${line}"\n`;
             return null;
         }
-        const [nameHP, ac, atk, dmg] = parts;
+        const [nameHP, ac, atk, dmg, init] = parts;
         const [name, hp] = nameHP.split(/:\s*/);
         if (!name || !hp) {
             log += `Invalid name/HP in party entry: "${line}"\n`;
@@ -190,20 +190,21 @@ function runCombatSim() {
         return {
             name: name.trim(),
             hp: hpValue,
-            maxHP: hpValue, // Store initial HP
+            maxHP: hpValue,
             ac: parseInt(ac) || 10,
             atk: parseInt(atk.replace("+", "")) || 0,
-            dmg: dmg || "1d4"
+            dmg: dmg || "1d4",
+            init: parseInt(init?.replace("+", "")) || 0
         };
     }).filter(c => c !== null);
 
     const enemies = enemyInput.map(line => {
         const parts = line.split(/,\s*/);
-        if (parts.length !== 4) {
+        if (parts.length < 4 || parts.length > 5) {
             log += `Invalid enemy entry: "${line}"\n`;
             return null;
         }
-        const [nameHP, ac, atk, dmg] = parts;
+        const [nameHP, ac, atk, dmg, init] = parts;
         const [name, hp] = nameHP.split(/:\s*/);
         if (!name || !hp) {
             log += `Invalid name/HP in enemy entry: "${line}"\n`;
@@ -213,39 +214,45 @@ function runCombatSim() {
         return {
             name: name.trim(),
             hp: hpValue,
-            maxHP: hpValue, // Store initial HP
+            maxHP: hpValue,
             ac: parseInt(ac) || 10,
             atk: parseInt(atk.replace("+", "")) || 0,
-            dmg: dmg || "1d4"
+            dmg: dmg || "1d4",
+            init: parseInt(init?.replace("+", "")) || 0
         };
     }).filter(c => c !== null);
 
     if (party.length === 0 || enemies.length === 0) {
-        log += "Please enter at least one valid party member and one enemy!\nFormat: Name: HP, AC, +Attack, Damage (e.g., Fighter: 20 HP, 16 AC, +5, 1d8+3)";
+        log += "Please enter at least one valid party member and one enemy!\nFormat: Name: HP, AC, +Attack, Damage, [+Init] (e.g., Fighter: 20 HP, 16 AC, +5, 1d8+3, +2)";
         document.getElementById("combat-log").innerText = log;
         return;
     }
 
-    let combatants = [...party, ...enemies];
-    updateCombatTracker(combatants); // Initial display
+    // Deep copy to ensure combatants reflect changes
+    let combatants = [...party.map(c => ({ ...c })), ...enemies.map(c => ({ ...c }))];
+    combatants.forEach(c => c.initiative = rollDice(20) + c.init);
+    combatants.sort((a, b) => b.initiative - a.initiative); // Highest first
+    log += "Initiative Order: " + combatants.map(c => `${c.name} (${c.initiative})`).join(", ") + "\n\n";
+    updateCombatTracker(combatants);
 
-    for (let round = 1; round <= 5 && party.some(c => c.hp > 0) && enemies.some(c => c.hp > 0); round++) {
+    for (let round = 1; round <= 5 && combatants.some(c => c.hp > 0 && party.includes(c)) && combatants.some(c => c.hp > 0 && enemies.includes(c)); round++) {
         log += `Round ${round}:\n`;
         combatants.forEach(attacker => {
             if (attacker.hp <= 0) return;
-            const target = attacker.hp > 0 ? (party.includes(attacker) ? enemies : party).find(t => t.hp > 0) : null;
+            const targetSide = party.includes(attacker) ? enemies : party;
+            const target = combatants.find(c => c.hp > 0 && targetSide.some(t => t.name === c.name));
             if (!target) return;
 
             const roll = rollDice(20);
             const hit = roll + attacker.atk >= target.ac;
             if (hit) {
                 const damage = evalDice(attacker.dmg);
-                target.hp = Math.max(0, target.hp - damage); // Prevent negative HP
+                target.hp = Math.max(0, target.hp - damage);
                 log += `${attacker.name} hits ${target.name} for ${damage} damage! (${target.hp} HP left)\n`;
             } else {
                 log += `${attacker.name} misses ${target.name}!\n`;
             }
-            updateCombatTracker(combatants); // Update after each action
+            updateCombatTracker(combatants);
         });
     }
 

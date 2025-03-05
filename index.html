@@ -42,9 +42,29 @@
         </div>
         <div class="combat-sim">
             <h2>Combat Simulator</h2>
+            <details>
+                <summary>How to Use the Chaos Engine</summary>
+                <div class="tutorial">
+                    <p>Welcome to the DM’s Chaos Engine, crafted for Jay! Here’s how to use it:</p>
+                    <ul>
+                        <li><strong>Tone & Theme:</strong> Pick a tone (e.g., Silly) and theme (e.g., Feywild) to flavour your outputs.</li>
+                        <li><strong>Generators:</strong> Click buttons above to create NPCs, twists, loot, or encounters—save favourites to the history below.</li>
+                        <li><strong>Combat Simulator:</strong>
+                            <ul>
+                                <li><strong>Input Format:</strong> Enter party and enemies, one per line. Format: <code>Name: HP, AC, +Attack, Damage, [+Init]</code> (e.g., <code>Sir Chuckles: 25 HP, 15 AC, +6, 1d8+4, +2</code>). <strong>Initiative (+Init)</strong> is optional—it’s a bonus (like Dexterity) added to a d20 roll to decide who acts first (higher is better). Skip it for a random roll!</li>
+                                <li><strong>Simulate:</strong> Click "Simulate Fight" for a 5-round battle. The tracker shows HP and initiative order live—watch those bars shrink!</li>
+                                <li><strong>Twists:</strong> If no one wins, a cliffhanger twist pops up—perfect for your next plot twist!</li>
+                                <li><strong>Download:</strong> Save the log as a text file with "Download Log."</li>
+                            </ul>
+                        </li>
+                        <li><strong>Roll d20:</strong> Use the dice button for quick rolls anytime.</li>
+                    </ul>
+                    <p>Unleash the chaos, Jay—enjoy!</p>
+                </div>
+            </details>
             <div class="combat-inputs">
-                <textarea id="party-input" placeholder="Party (e.g., Fighter: 20 HP, 16 AC, +5, 1d8+3)"></textarea>
-                <textarea id="enemy-input" placeholder="Enemies (e.g., Goblin: 10 HP, 12 AC, +3, 1d4+1)"></textarea>
+                <textarea id="party-input" placeholder="Party (e.g., Fighter: 20 HP, 16 AC, +5, 1d8+3, +2)"></textarea>
+                <textarea id="enemy-input" placeholder="Enemies (e.g., Goblin: 10 HP, 12 AC, +3, 1d4+1, +1)"></textarea>
             </div>
             <button onclick="runCombatSim()">Simulate Fight</button>
             <div id="combat-tracker"></div>
@@ -52,7 +72,7 @@
             <button onclick="downloadLog()">Download Log</button>
         </div>
     </main>
-    <footer>Crafted for Jay :D </footer>
+    <footer>Crafted for Jay :D</footer>
     <script src="script.js"></script>
 </body>
 </html>

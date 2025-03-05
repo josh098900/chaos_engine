@@ -194,11 +194,38 @@ textarea {
 }
 
 .tracker-bar progress::-webkit-progress-value {
-    background: #d4af37; /* Gold HP bar */
+    background: #d4af37;
 }
 
 .tracker-bar progress::-moz-progress-bar {
     background: #d4af37;
+}
+
+.tutorial {
+    background: rgba(230, 215, 163, 0.9);
+    border: 2px solid #4a2c6d;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: left;
+    color: #2d1b3d;
+    margin: 10px 0;
+}
+
+.tutorial p, .tutorial ul {
+    margin: 5px 0;
+}
+
+.tutorial code {
+    background: #2d1b3d;
+    color: #e6d7a3;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+details summary {
+    cursor: pointer;
+    color: #d4af37;
+    text-shadow: 1px 1px 2px #1a0d1a;
 }
 
 footer {
