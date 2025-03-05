@@ -92,7 +92,7 @@ function generateTwist() {
     const twist = twistList[Math.floor(Math.random() * twistList.length)];
     const roll = rollDice(20);
     document.getElementById("output").innerText = `${twist} (Roll: ${roll} - DM decides the outcome!)`;
-    return `${twist} (Roll: ${roll} - DM decides the outcome!)`; // Return for combat sim
+    return `${twist} (Roll: ${roll} - DM decides the outcome!)`;
 }
 
 function generateLoot() {
@@ -231,7 +231,7 @@ function runCombatSim() {
     else if (enemies.every(c => c.hp <= 0)) log += "Party wins!\n";
     else {
         log += "The battle rages on!\n";
-        log += generateTwist() + "\n"; // Auto-add a twist
+        log += generateTwist() + "\n";
     }
 
     document.getElementById("combat-log").innerText = log;
@@ -244,4 +244,17 @@ function evalDice(dmgString) {
     let total = 0;
     for (let i = 0; i < (count || 1); i++) total += Math.floor(Math.random() * (sides || 4)) + 1;
     return total + (parseInt(mod) || 0);
+}
+
+function downloadLog() {
+    const log = document.getElementById("combat-log").innerText;
+    if (!log) {
+        alert("No combat log to download yet—run a simulation first!");
+        return;
+    }
+    const blob = new Blob([log], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "combat_log.txt";
+    link.click();
 }

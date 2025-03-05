@@ -1,39 +1,39 @@
 body {
     font-family: 'Cinzel', serif;
     text-align: center;
-    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #e6d7a3; /* Parchment texture */
-    color: #2d1b3d; /* Dark purple-gray for text */
+    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #e6d7a3;
+    color: #2d1b3d;
     margin: 0;
-    padding: 0; /* Adjusted padding */
+    padding: 0;
     background-blend-mode: overlay;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensures body takes full viewport height */
+    min-height: 100vh;
 }
 
 main {
-    flex: 1; /* Pushes footer to bottom by letting main grow */
-    padding: 20px; /* Restores padding inside main content */
+    flex: 1;
+    padding: 20px;
 }
 
 h1 {
-    color: #d4af37; /* Gold for the title */
-    text-shadow: 2px 2px 4px #1a0d1a, 0 0 10px rgba(212, 175, 55, 0.5); /* Shadow + glow */
+    color: #d4af37;
+    text-shadow: 2px 2px 4px #1a0d1a, 0 0 10px rgba(212, 175, 55, 0.5);
     font-size: 2.5em;
     margin-bottom: 20px;
 }
 
 .controls {
     margin: 20px;
-    background: rgba(45, 27, 61, 0.9); /* Deep purple background */
+    background: rgba(45, 27, 61, 0.9);
     padding: 15px;
-    border: 2px solid #d4af37; /* Gold border */
+    border: 2px solid #d4af37;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); /* Subtle gold glow */
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 label {
-    color: #e6d7a3; /* Parchment off-white */
+    color: #e6d7a3;
     margin-right: 10px;
     text-shadow: 1px 1px 2px #1a0d1a;
 }
@@ -41,9 +41,9 @@ label {
 .controls select, .controls button {
     padding: 10px;
     margin: 5px;
-    background-color: #4a2c6d; /* Rich purple */
-    color: #e6d7a3; /* Off-white text */
-    border: 1px solid #d4af37; /* Gold trim */
+    background-color: #4a2c6d;
+    color: #e6d7a3;
+    border: 1px solid #d4af37;
     border-radius: 5px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
@@ -51,8 +51,8 @@ label {
 }
 
 .controls select:hover, .controls button:hover {
-    background-color: #6b3fa0; /* Lighter purple */
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Gold glow on hover */
+    background-color: #6b3fa0;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 .dice {
@@ -60,7 +60,7 @@ label {
 }
 
 .dice button {
-    background-color: #2d1b3d; /* Darker purple */
+    background-color: #2d1b3d;
     color: #e6d7a3;
     padding: 10px 20px;
     border: 1px solid #d4af37;
@@ -77,18 +77,18 @@ label {
 #dice-result {
     margin-left: 10px;
     font-weight: bold;
-    color: #d4af37; /* Gold for dice result */
+    color: #d4af37;
     text-shadow: 1px 1px 2px #1a0d1a;
 }
 
 .output-box {
     margin: 20px auto;
     padding: 20px;
-    background: rgba(230, 215, 163, 0.9); /* Parchment-like */
-    border: 3px solid #2d1b3d; /* Dark purple border */
+    background: rgba(230, 215, 163, 0.9);
+    border: 3px solid #2d1b3d;
     border-radius: 10px;
     max-width: 600px;
-    box-shadow: 0 0 15px rgba(45, 27, 61, 0.5); /* Subtle purple shadow */
+    box-shadow: 0 0 15px rgba(45, 27, 61, 0.5);
     animation: fadeIn 0.5s;
     color: #2d1b3d;
 }
@@ -96,8 +96,8 @@ label {
 .history-box {
     margin: 20px auto;
     padding: 15px;
-    background: rgba(230, 215, 163, 0.7); /* Lighter parchment */
-    border: 2px dashed #4a2c6d; /* Dashed purple */
+    background: rgba(230, 215, 163, 0.7);
+    border: 2px dashed #4a2c6d;
     border-radius: 10px;
     max-width: 600px;
     text-align: left;
@@ -105,7 +105,7 @@ label {
 }
 
 .history-box h2 {
-    color: #d4af37; /* Gold for "Saved Ideas" */
+    color: #d4af37;
     text-shadow: 1px 1px 2px #1a0d1a;
     margin-top: 0;
 }
@@ -117,7 +117,7 @@ label {
 
 #history-list li {
     padding: 8px 0;
-    border-bottom: 1px solid #4a2c6d; /* Purple separator */
+    border-bottom: 1px solid #4a2c6d;
     color: #2d1b3d;
 }
 
@@ -166,12 +166,12 @@ textarea {
 footer {
     width: 100%;
     padding: 10px;
-    background: rgba(230, 215, 163, 0.9); /* Parchment-like */
-    color: #d4af37; /* Gold text */
-    text-shadow: 1px 1px 2px #1a0d1a; /* Dark shadow */
+    background: rgba(230, 215, 163, 0.9);
+    color: #d4af37;
+    text-shadow: 1px 1px 2px #1a0d1a;
     font-size: 1.1em;
-    border-top: 2px solid #4a2c6d; /* Purple separator */
-    box-shadow: 0 -5px 10px rgba(45, 27, 61, 0.3); /* Shadow upward */
+    border-top: 2px solid #4a2c6d;
+    box-shadow: 0 -5px 10px rgba(45, 27, 61, 0.3);
 }
 
 @keyframes fadeIn {
